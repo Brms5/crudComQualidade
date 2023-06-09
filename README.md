@@ -1,2 +1,2 @@
 # crudComQualidade
-Curso Crud com qualidade - Dev Soutinho
+Curso CRUD com qualidade - Dev Soutinho

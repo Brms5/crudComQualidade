@@ -1,0 +1,25 @@
+{
+  "name": "crudcomqualidade",
+  "version": "1.0.0",
+  "description": "Curso CRUD com qualidade - Dev Soutinho",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./core/crud.js",
+    "dev": "nodemon ./core/crud.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Brms5/crudComQualidade.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Brms5/crudComQualidade/issues"
+  },
+  "homepage": "https://github.com/Brms5/crudComQualidade#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
