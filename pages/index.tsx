@@ -11,12 +11,13 @@ interface HomeTodo {
 }
 
 function HomePage() {
+  const [page, setPage] = React.useState(1); // [1, 2, 3, 4, 5
   const [todos, setTodos] = React.useState<HomeTodo[]>([]);
 
   // Load informações quando a página é carregada
   React.useEffect(() => {
-    todoController.get().then((res) => {
-      setTodos(res);
+    todoController.get({ page }).then(({ todos }) => {
+      setTodos(todos);
     });
   }, []);
 
@@ -72,22 +73,22 @@ function HomePage() {
               );
             })}
 
-            {/* <tr>
+            <tr>
               <td colSpan={4} align="center" style={{ textAlign: "center" }}>
                 Carregando...
               </td>
-            </tr> */}
+            </tr>
 
-            {/* <tr>
+            <tr>
               <td colSpan={4} align="center">
                 Nenhum item encontrado
               </td>
-            </tr> */}
+            </tr>
 
-            {/* <tr>
+            <tr>
               <td colSpan={4} align="center" style={{ textAlign: "center" }}>
-                <button data-type="load-more">
-                  Carregar mais{" "}
+                <button data-type="load-more" onClick={() => setPage(page + 1)}>
+                  Página {page}, Carregar mais{" "}
                   <span
                     style={{
                       display: "inline-block",
@@ -99,7 +100,7 @@ function HomePage() {
                   </span>
                 </button>
               </td>
-            </tr> */}
+            </tr>
           </tbody>
         </table>
       </section>
