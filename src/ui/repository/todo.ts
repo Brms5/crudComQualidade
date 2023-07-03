@@ -2,6 +2,7 @@ interface TodoRepositoryGetParams {
   page: number;
   limit: number;
 }
+
 interface TodoRepositoryGetOutput {
   todos: Todo[];
   total: number;
@@ -12,24 +13,18 @@ function get({
   page,
   limit,
 }: TodoRepositoryGetParams): Promise<TodoRepositoryGetOutput> {
-  return fetch("/api/todos").then(async (response) => {
-    const todosString = await response.text();
-    const todosFromServer = parseTodosFromServer(JSON.parse(todosString)).todos;
-    console.log("page", page);
-    console.log("limit", limit);
+  return fetch(`/api/todos?page=${page}&limit=${limit}`).then(
+    async (response) => {
+      const todosString = await response.text();
+      const responseParsed = parseTodosFromServer(JSON.parse(todosString));
 
-    const allTodos = todosFromServer;
-    const startIndex = (page - 1) * limit;
-    const endIndex = page * limit;
-    const paginatedTodos = allTodos.slice(startIndex, endIndex);
-    const totalPages = Math.ceil(allTodos.length / limit);
-
-    return {
-      todos: paginatedTodos,
-      total: allTodos.length,
-      pages: totalPages,
-    };
-  });
+      return {
+        todos: responseParsed.todos,
+        total: responseParsed.total,
+        pages: responseParsed.pages,
+      };
+    }
+  );
 }
 
 export const todoRepository = {
@@ -44,15 +39,23 @@ interface Todo {
   done: boolean;
 }
 
-function parseTodosFromServer(responseBody: unknown): { todos: Array<Todo> } {
+function parseTodosFromServer(responseBody: unknown): {
+  total: number;
+  pages: number;
+  todos: Array<Todo>;
+} {
   if (
     typeof responseBody === "object" &&
     responseBody !== null &&
+    "total" in responseBody &&
     "todos" in responseBody &&
+    "pages" in responseBody &&
     Array.isArray(responseBody.todos)
   ) {
     console.log("responseBody", responseBody.todos);
     return {
+      total: Number(responseBody.total),
+      pages: Number(responseBody.pages),
       todos: responseBody.todos.map((todo: unknown) => {
         if (typeof todo !== "object" || todo === null) {
           throw new Error("Invalid todo from server");
@@ -74,8 +77,10 @@ function parseTodosFromServer(responseBody: unknown): { todos: Array<Todo> } {
       }),
     };
   }
-  
+
   return {
+    pages: 1,
+    total: 0,
     todos: [],
   };
 }
