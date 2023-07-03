@@ -52,7 +52,6 @@ function parseTodosFromServer(responseBody: unknown): {
     "pages" in responseBody &&
     Array.isArray(responseBody.todos)
   ) {
-    console.log("responseBody", responseBody.todos);
     return {
       total: Number(responseBody.total),
       pages: Number(responseBody.pages),
