@@ -14,23 +14,31 @@ function HomePage() {
   const [initialLoadComplete, setInitialLoadComplete] = React.useState(false); // [true, false
   const [totalPages, setTotalPages] = React.useState(0);
   const [page, setPage] = React.useState(1); // [1, 2, 3, 4, 5
+  const [search, setSearch] = React.useState(""); // ["", "a", "ab", "abc"
   const [isLoading, setIsLoading] = React.useState(true);
   const [todos, setTodos] = React.useState<HomeTodo[]>([]);
 
+  const filteredTodos = todoController.filterTodosByContent<HomeTodo>(
+    todos,
+    search
+  );
+
   const hasMorePages = totalPages > page;
-  const hasNoTodos = todos.length === 0 && !isLoading;
+  const hasNoTodos = filteredTodos.length === 0 && !isLoading;
 
   // Load informações quando a página é carregada
   React.useEffect(() => {
     setInitialLoadComplete(true);
     if (!initialLoadComplete) {
-      todoController.get({ page }).then(({ todos, pages }) => {
-        setTodos(todos);
-        setTotalPages(pages);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+      todoController
+        .get({ page })
+        .then(({ todos, pages }) => {
+          setTodos(todos);
+          setTotalPages(pages);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
     }
   }, []);
 
@@ -55,7 +63,14 @@ function HomePage() {
 
       <section>
         <form>
-          <input type="text" placeholder="Filtrar lista atual, ex: Dentista" />
+          <input
+            type="text"
+            placeholder="Filtrar lista atual, ex: Dentista"
+            value={search}
+            onChange={function handleSearch(event) {
+              setSearch(event.target.value);
+            }}
+          />
         </form>
 
         <table border={1}>
@@ -71,7 +86,7 @@ function HomePage() {
           </thead>
 
           <tbody>
-            {todos.map((todo: any) => {
+            {filteredTodos.map((todo: any) => {
               return (
                 <tr key={todo.id}>
                   <td>
