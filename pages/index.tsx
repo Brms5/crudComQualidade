@@ -12,10 +12,11 @@ interface HomeTodo {
 
 function HomePage() {
   const initialLoadComplete = React.useRef<boolean>(false);
+  const [newTodoContent, setNewTodoContent] = React.useState<string>("");
   const [totalPages, setTotalPages] = React.useState<number>(0);
   const [page, setPage] = React.useState<number>(1); // [1, 2, 3, 4, 5
   const [search, setSearch] = React.useState<string>(""); // ["", "a", "ab", "abc"
-  const [isLoading, setIsLoading] = React.useState(true);
+  const [isLoading, setIsLoading] = React.useState<boolean>(true);
   const [todos, setTodos] = React.useState<HomeTodo[]>([]);
 
   const filteredTodos = todoController.filterTodosByContent<HomeTodo>(
@@ -53,8 +54,33 @@ function HomePage() {
         <div className="typewriter">
           <h1>O que fazer hoje?</h1>
         </div>
-        <form>
-          <input type="text" placeholder="Correr, Estudar..." />
+        <form
+          onSubmit={(event) => {
+            event.preventDefault();
+            todoController.create({
+              content: newTodoContent,
+              // .then
+              onSuccess(todo: HomeTodo) {
+                setTodos((oldTodos) => {
+                  return [todo, ...oldTodos];
+                });
+                setNewTodoContent("");
+              },
+              // .catch
+              onError(customMessage) {
+                alert(customMessage || "Erro ao criar novo item");
+              },
+            });
+          }}
+        >
+          <input
+            type="text"
+            placeholder="Correr, Estudar..."
+            value={newTodoContent}
+            onChange={function newTodoHandler(event) {
+              setNewTodoContent(event.target.value);
+            }}
+          />
           <button type="submit" aria-label="Adicionar novo item">
             +
           </button>

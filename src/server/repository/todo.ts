@@ -14,7 +14,7 @@ interface TodoRepositoryGetOutput {
 async function get({ page, limit }: TodoRepositoryGetParams = {}) {
   const currentPage = page || 1;
   const currentLimit = limit || 10;
-  const allTodos = read();
+  const allTodos = read().reverse();
 
   const startIndex = (currentPage - 1) * currentLimit;
   const endIndex = currentPage * currentLimit;
