@@ -11,10 +11,10 @@ interface HomeTodo {
 }
 
 function HomePage() {
-  const [initialLoadComplete, setInitialLoadComplete] = React.useState(false); // [true, false
-  const [totalPages, setTotalPages] = React.useState(0);
-  const [page, setPage] = React.useState(1); // [1, 2, 3, 4, 5
-  const [search, setSearch] = React.useState(""); // ["", "a", "ab", "abc"
+  const initialLoadComplete = React.useRef<boolean>(false);
+  const [totalPages, setTotalPages] = React.useState<number>(0);
+  const [page, setPage] = React.useState<number>(1); // [1, 2, 3, 4, 5
+  const [search, setSearch] = React.useState<string>(""); // ["", "a", "ab", "abc"
   const [isLoading, setIsLoading] = React.useState(true);
   const [todos, setTodos] = React.useState<HomeTodo[]>([]);
 
@@ -28,8 +28,7 @@ function HomePage() {
 
   // Load informações quando a página é carregada
   React.useEffect(() => {
-    setInitialLoadComplete(true);
-    if (!initialLoadComplete) {
+    if (!initialLoadComplete.current) {
       todoController
         .get({ page })
         .then(({ todos, pages }) => {
@@ -38,6 +37,7 @@ function HomePage() {
         })
         .finally(() => {
           setIsLoading(false);
+          initialLoadComplete.current = true;
         });
     }
   }, []);
