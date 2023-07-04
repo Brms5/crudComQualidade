@@ -6,7 +6,6 @@ async function get(req: NextApiRequest, res: NextApiResponse) {
   const query = req.query;
   const page = Number(query.page);
   const limit = Number(query.limit);
-  console.log("query", query);
 
   if (query.page && isNaN(page)) {
     res.status(400).json({
@@ -31,7 +30,6 @@ async function get(req: NextApiRequest, res: NextApiResponse) {
     limit,
   });
 
-  console.log("TYPE", typeof "");
   res.status(200).json({
     todos: output.todos,
     total: output.total,
@@ -42,6 +40,7 @@ async function get(req: NextApiRequest, res: NextApiResponse) {
 const todoCreateBodySchema = schema.object({
   content: schema.string(),
 });
+
 async function create(req: NextApiRequest, res: NextApiResponse) {
   const body = todoCreateBodySchema.safeParse(req.body);
 
@@ -57,7 +56,6 @@ async function create(req: NextApiRequest, res: NextApiResponse) {
 
   const createdTodo = await todoRepository.createByContent(body.data.content);
 
-  // res.status(200).json({ todo: output.todo });
   res.status(201).json({
     todo: createdTodo,
   });

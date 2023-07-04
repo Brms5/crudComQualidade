@@ -1,3 +1,6 @@
+import { Todo, todoSchema } from "@ui/schema/todo";
+import {z as schema} from "zod";
+
 interface TodoRepositoryGetParams {
   page: number;
   limit: number;
@@ -27,17 +30,39 @@ function get({
   );
 }
 
+export async function createByContent(content: string): Promise<Todo> {
+  const response = await fetch("/api/todos", {
+    method: "POST",
+    headers: {
+      // MIME type
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ content }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Error creating todo");
+  }
+
+  const serverReponse = await response.json();
+  const serverResponseSchema = schema.object({
+    todo: todoSchema,
+  });
+
+  const serverResponseParsed = serverResponseSchema.safeParse(serverReponse);
+  if (!serverResponseParsed.success) {
+    throw new Error("Error creating todo");
+  }
+
+  const todo = serverResponseParsed.data.todo;
+  return todo;
+  // return serverReponse;
+}
+
 export const todoRepository = {
   get,
+  createByContent,
 };
-
-// Model/Schema
-interface Todo {
-  id: string;
-  content: string;
-  date: Date;
-  done: boolean;
-}
 
 function parseTodosFromServer(responseBody: unknown): {
   total: number;
@@ -70,7 +95,7 @@ function parseTodosFromServer(responseBody: unknown): {
         return {
           id,
           content,
-          date: new Date(date),
+          date: date,
           done: String(done).toLowerCase() === "true",
         };
       }),
