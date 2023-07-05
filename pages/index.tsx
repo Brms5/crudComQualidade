@@ -116,10 +116,34 @@ function HomePage() {
               return (
                 <tr key={todo.id}>
                   <td>
-                    <input type="checkbox" />
+                    <input
+                      type="checkbox"
+                      defaultChecked={todo.done}
+                      onChange={function handleToggle() {
+                        todoController.toggleDone({
+                          id: todo.id,
+                          onError() {
+                            alert("Erro ao atualizar a TODO!");
+                          },
+                          updateTodoOnScreen() {
+                            setTodos((currentTodos) => {
+                              return currentTodos.map((currentTodo) => {
+                                if (currentTodo.id === todo.id) {
+                                  return {
+                                    ...currentTodo,
+                                    done: !currentTodo.done,
+                                  };
+                                }
+                                return currentTodo;
+                              });
+                            });
+                          },
+                        });
+                      }}
+                    />
                   </td>
                   <td>{todo.id.substring(0, 4)}</td>
-                  <td>{todo.content}</td>
+                  <td>{todo.done ? <s>{todo.content}</s> : todo.content}</td>
                   <td align="right">
                     <button data-type="delete">Apagar</button>
                   </td>

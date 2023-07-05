@@ -66,7 +66,7 @@ function updateContentById(id: UUID, content: string): Todo {
   return update(id, {content});
 }
 
-function updateDoneById(id: UUID, done: boolean): Todo {
+export function updateDoneById(id: UUID, done: boolean): Todo {
   return update(id, {done});
 }
 

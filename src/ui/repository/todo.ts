@@ -1,5 +1,5 @@
 import { Todo, todoSchema } from "@ui/schema/todo";
-import {z as schema} from "zod";
+import { z as schema } from "zod";
 
 interface TodoRepositoryGetParams {
   page: number;
@@ -41,7 +41,7 @@ export async function createByContent(content: string): Promise<Todo> {
   });
 
   if (!response.ok) {
-    throw new Error("Error creating todo");
+    throw new Error("Error creating TODO");
   }
 
   const serverReponse = await response.json();
@@ -51,7 +51,7 @@ export async function createByContent(content: string): Promise<Todo> {
 
   const serverResponseParsed = serverResponseSchema.safeParse(serverReponse);
   if (!serverResponseParsed.success) {
-    throw new Error("Error creating todo");
+    throw new Error("Error creating TODO");
   }
 
   const todo = serverResponseParsed.data.todo;
@@ -59,9 +59,37 @@ export async function createByContent(content: string): Promise<Todo> {
   // return serverReponse;
 }
 
+async function toggleDone(todoId: string): Promise<Todo> {
+  const response = await fetch(`/api/todos/${todoId}/toggle-done`, {
+    method: "PUT",
+  });
+
+  console.log(response);
+
+  if (!response.ok) {
+    throw new Error("Error toggling TODO");
+  }
+
+  const serverReponse = await response.json();
+  const serverResponseSchema = schema.object({
+    todo: todoSchema,
+  });
+
+  const serverResponseParsed = serverResponseSchema.safeParse(serverReponse);
+  if (!serverResponseParsed.success) {
+    throw new Error(`Error updating TODO with id ${todoId}`);
+  }
+
+  const updatedTodo = serverResponseParsed.data.todo;
+
+  console.log(updatedTodo);
+  return updatedTodo;
+}
+
 export const todoRepository = {
   get,
   createByContent,
+  toggleDone,
 };
 
 function parseTodosFromServer(responseBody: unknown): {

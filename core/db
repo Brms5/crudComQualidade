@@ -4,7 +4,7 @@
       "id": "a03ef08e-d829-4c3e-9b4a-64160e13ef55",
       "date": "2023-07-01T14:57:00.026Z",
       "content": "Primeira TODO atualizada!",
-      "done": false
+      "done": true
     },
     {
       "id": "7b9ebfff-7a41-4e71-80e4-5f1f78b82ba4",
@@ -22,7 +22,7 @@
       "id": "8330d93e-9c1d-4d93-8806-b2e97172459e",
       "date": "2023-07-02T14:38:37.544Z",
       "content": "Quarta TODO!",
-      "done": false
+      "done": true
     },
     {
       "id": "c989ee10-3144-4f18-a280-ee595c97666a",
@@ -34,7 +34,13 @@
       "id": "d84a8d01-ebc3-4bb3-bae4-c074c1ab012f",
       "date": "2023-07-04T13:35:22.449Z",
       "content": "Novo conteúdo no TODO",
-      "done": false
+      "done": true
+    },
+    {
+      "id": "ee2a792c-75f6-49fd-a20d-63177b7f516e",
+      "date": "2023-07-05T13:48:11.858Z",
+      "content": "Novo",
+      "done": true
     }
   ]
 }
