@@ -70,7 +70,7 @@ export function updateDoneById(id: UUID, done: boolean): Todo {
   return update(id, {done});
 }
 
-function deleteById(id: UUID): void {
+export function deleteById(id: UUID): void {
   const todos = read();
   const todosWithoutOne = todos.filter((currentTodo) => {
     if(currentTodo.id === id) {

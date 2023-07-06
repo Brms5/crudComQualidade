@@ -64,8 +64,6 @@ async function toggleDone(todoId: string): Promise<Todo> {
     method: "PUT",
   });
 
-  console.log(response);
-
   if (!response.ok) {
     throw new Error("Error toggling TODO");
   }
@@ -81,15 +79,24 @@ async function toggleDone(todoId: string): Promise<Todo> {
   }
 
   const updatedTodo = serverResponseParsed.data.todo;
-
-  console.log(updatedTodo);
   return updatedTodo;
+}
+
+async function deleteById(id: string) {
+  const response = await fetch(`/api/todos/${id}`, {
+    method: "DELETE",
+  });
+
+  if (!response.ok) {
+    throw new Error("Error deleting TODO");
+  }
 }
 
 export const todoRepository = {
   get,
   createByContent,
   toggleDone,
+  deleteById,
 };
 
 function parseTodosFromServer(responseBody: unknown): {
