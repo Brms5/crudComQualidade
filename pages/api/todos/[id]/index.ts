@@ -6,7 +6,7 @@ export default function handler(
   response: NextApiResponse
 ) {
   // TODO Organize to have only the delete method here
-  
+
   if (request.method === "DELETE") {
     todoController.deleteById(request, response);
     return;

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { todoController } from "@ui/controller/todo";
 import { GlobalStyles } from "@ui/theme/GlobalStyles";
 import React from "react";

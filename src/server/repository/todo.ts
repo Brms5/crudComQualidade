@@ -1,4 +1,9 @@
-import { read, create, updateDoneById, deleteById as dBDeleteById } from "@db-crud-todo";
+import {
+  read,
+  create,
+  updateDoneById,
+  deleteById as dBDeleteById,
+} from "@db-crud-todo";
 import { HttpNotFoundError } from "@server/infra/errors";
 
 interface TodoRepositoryGetParams {
@@ -6,6 +11,7 @@ interface TodoRepositoryGetParams {
   limit?: number;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface TodoRepositoryGetOutput {
   todos: Todo[];
   total: number;
