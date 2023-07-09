@@ -1,8 +1,7 @@
-import { type } from "os";
-import {z as schema} from "zod";
+import { z as schema } from "zod";
 
 export const todoSchema = schema.object({
-  id: schema.string().uuid(), 
+  id: schema.string().uuid(),
   content: schema.string(),
   date: schema.string().datetime(),
   done: schema.boolean(),
