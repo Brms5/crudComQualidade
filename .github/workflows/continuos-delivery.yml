@@ -26,4 +26,3 @@ jobs:
         run: "npm install"
       - name: "Deploy"
         run: "npx vercel --prod --token=${{ secrets.VERCEL_TOKEN }}"
-  
