@@ -43,7 +43,6 @@ async function get({
   if (!parsedData.success) {
     throw new Error("Failed to parse TODO from database");
   }
-  // TODO: Fix this to be properly validated by schema
 
   const todos = parsedData.data;
   const total = count || todos.length;
